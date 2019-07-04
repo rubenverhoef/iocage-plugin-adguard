@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# PROVIDE: adguard
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# adguard_enable (bool):        Set to NO by default.
+#                       Set it to YES to enable it.
+
+. /etc/rc.subr
+
+name=adguard
+rcvar=adguard_enable
+load_rc_config ${name}
+
+command="/root/AdGuardHome/AdGuardHome"
+command_args=""
+
+run_rc_command "$1"
