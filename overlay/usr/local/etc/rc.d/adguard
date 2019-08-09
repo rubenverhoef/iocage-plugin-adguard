@@ -1,4 +1,23 @@
 #!/bin/sh
+#
+# PROVIDE: adguard
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# adguard_enable (bool):        Set to NO by default.
+#                       Set it to YES to enable it.
+# adguard_user:         The user account adguard daemon runs as what
+#                       you want it to be. It uses 'root' user by
+#                       default.
+# adguard_group:        The group account adguard daemon runs as what
+#                       you want it to be. It uses 'wheel' group by
+#                       default.
+# adguard_pidfile:      Set the location of the adguard pidfile
+# adguard_logfile:      Set the location of the adguard logfile
+# adguard_workdir:      Set the location of the adguard workdir
 
 . /etc/rc.subr
 
