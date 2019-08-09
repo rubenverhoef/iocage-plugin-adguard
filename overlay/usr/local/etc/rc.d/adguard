@@ -1,14 +1,4 @@
 #!/bin/sh
-#
-# PROVIDE: adguard
-# REQUIRE: LOGIN
-# KEYWORD: shutdown
-#
-# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
-# to enable this service:
-#
-# adguard_enable (bool):        Set to NO by default.
-#                       Set it to YES to enable it.
 
 . /etc/rc.subr
 
@@ -19,23 +9,27 @@ load_rc_config ${name}
 : ${adguard_enable:=NO}
 : ${adguard_user:=root}
 : ${adguard_group:=wheel}
-: ${adguard_conf_dir="/usr/local/adguard"}
+: ${adguard_workdir:="/usr/local/adguard"}
 : ${adguard_pidfile:="/var/run/adguard/adguard.pid"}
+: ${adguard_logfile:="/var/log/adguard/adguard.log"}
 
 pidfile=${adguard_pidfile}
+logfile=${adguard_logfile}
+workdir=${adguard_workdir}
 
-start_precmd="${name}_prestart"
 command=/usr/sbin/daemon
 procname="/root/AdGuardHome/AdGuardHome"
-command_args="-f ${procname} --pidfile ${pidfile}"
+command_args="-f ${procname} --host 0.0.0.0 --port 3000 --pidfile ${pidfile} --logfile ${logfile} --work-dir ${workdir}"
+
+start_precmd="${name}_prestart"
 
 adguard_prestart()
 {
 	PATH=${PATH}:/usr/local/bin:/usr/local/sbin
 	export LC_CTYPE="en_US.UTF-8"
-	for dir in ${adguard_conf_dir} ${pidfile%/*}; do
+	for dir in ${workdir} ${logfile%/*} ${pidfile%/*}; do
 		if [ ! -d "${dir}" ]; then
-			install -d -o ${adguard_user} -g ${adguard_group} ${dir}
+				install -d -o ${adguard_user} -g ${adguard_group} ${dir}
 		fi
 	done
 }
